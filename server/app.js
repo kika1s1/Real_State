@@ -3,19 +3,14 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bodyParser from 'body-parser'
 
+import connectDB from "./config/connectDB.js";
+
 import userRoutes from './routes/user.js'
 import authRoutes from './routes/auth.js'
 import errorHandler from "./middleware/errorHandler.js";
 dotenv.config();
 
-mongoose
-  .connect(process.env.MONGO)
-  .then(() => {
-    console.log("Connected to MongoDB!");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+connectDB();
 const PORT = process.env.PORT || 3000
 const app = express();
 app.use(express.json());
