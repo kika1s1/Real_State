@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState } from "react";
 import axios from "axios";
-import { signInFailure, signInStart, signInSuccess } from "../features/user/userSlice";
+import {  updateUserFailure, updateUserStart, updateUserSuccess } from "../features/user/userSlice";
 
 const Profile = () => {
   const [profileImage, setProfileImage] = useState(null);
@@ -30,8 +30,7 @@ const Profile = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log(currentUser._id)
-    dispatch(signInStart())
+    dispatch(updateUserStart())
     e.preventDefault();
     const formData = new FormData();
     formData.append("username", usernameRef.current.value);
@@ -50,15 +49,15 @@ const Profile = () => {
       });
 
       if (res.data.success) {
-        dispatch(signInSuccess(res.data))
+        dispatch(updateUserSuccess(res.data))
         setSuccess(res.data.message)
         
         
       } else {
-        dispatch(signInFailure(res.data.error || "Update failed."))
+        dispatch(updateUserFailure(res.data.error || "Update failed."))
       }
     } catch (error) {
-      dispatch(signInFailure(error.message || "Update failed."))
+      dispatch(updateUserFailure(error.message || "Update failed."))
     }
   };
 
