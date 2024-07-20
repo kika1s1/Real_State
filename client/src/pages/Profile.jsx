@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState } from "react";
 import axios from "axios";
-import {  deleteUserFailure, deleteUserSuccess, signOutUserStart, updateUserFailure, updateUserStart, updateUserSuccess } from "../features/user/userSlice";
+import {  deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserStart, updateUserFailure, updateUserStart, updateUserSuccess } from "../features/user/userSlice";
 
 const Profile = () => {
   const [profileImage, setProfileImage] = useState(null);
@@ -81,6 +81,20 @@ const Profile = () => {
       dispatch(deleteUserFailure(error.message));
     }
   };
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const data = await axios.delete(`/api/user/delete/${currentUser._id}`);
+      
+      if (data.status !== 200) {
+        dispatch(deleteUserFailure(data.data));
+        return;
+      }
+      dispatch(deleteUserSuccess(data.data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.response.data));
+    }
+  };
 
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -131,7 +145,7 @@ const Profile = () => {
       {error && <p className="text-center text-red-500">{error}</p>}
       {success && <p className="text-center text-blue-500">{success}</p>}
       <div className="flex justify-between mt-5">
-        <span className="text-red-700 cursor-pointer">Delete account</span>
+        <span onClick={handleDeleteUser} className="text-red-700 cursor-pointer">Delete account</span>
         <span onClick={handleSignOut} className="text-red-700 cursor-pointer">Sign out</span>
       </div>
     </div>
