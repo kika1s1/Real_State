@@ -31,6 +31,9 @@ export const signup = async (req, res, next) => {
 
 export const signin = async (req, res, next) => {
   const { email, password } = req.body;
+  if (!(email && password)) {
+    return next(new ErrorResponse("All fields are required", 400));
+  }
   try {
     const user = await User.findOne({ email });
     if (!user) {
