@@ -1,14 +1,16 @@
 import bcryptjs from 'bcryptjs'
 import User from "../models/User.js";
+import ErrorResponse from '../utils/errorResponse.js';
 
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
   const hashedPassword = bcryptjs.hashSync(password, 10);
   const newUser = new User({ username, email, password: hashedPassword });
   try {
-    const user = await User.findOne({email})
-    if(user){
-        return res.status(400).json({message: "Email already exists."})
+    const userEmail = await User.findOne({email})
+    const userUsername = await User.findOne({username})
+    if(userEmail || userUsername){
+        return next(new ErrorResponse("Email already exists.", 400))
     }
     await newUser.save();
     res.status(201).json({
