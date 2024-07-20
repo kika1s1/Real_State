@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState } from "react";
 import axios from "axios";
-import {  updateUserFailure, updateUserStart, updateUserSuccess } from "../features/user/userSlice";
+import {  deleteUserFailure, deleteUserSuccess, signOutUserStart, updateUserFailure, updateUserStart, updateUserSuccess } from "../features/user/userSlice";
 
 const Profile = () => {
   const [profileImage, setProfileImage] = useState(null);
@@ -53,11 +53,32 @@ const Profile = () => {
         setSuccess(res.data.message)
         
         
+        
       } else {
         dispatch(updateUserFailure(res.data.error || "Update failed."))
+        setSuccess(null)
+        
       }
     } catch (error) {
-      dispatch(updateUserFailure(error.message || "Update failed."))
+
+      dispatch(updateUserFailure(error.response?.data?.error || error.message || "Update failed."))
+      setSuccess(null)
+      
+    }
+  };
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      const data = await axios.get('/api/auth/signout');
+      // const data = await res.json();
+      console.log(data.data)
+      if (data.status !== 200) {
+        dispatch(deleteUserFailure(data.data));
+        return;
+      }
+      dispatch(deleteUserSuccess(data.data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
     }
   };
 
@@ -103,7 +124,7 @@ const Profile = () => {
           className="border p-3 rounded-lg"
           ref={passwordRef}
         />
-        <button className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80">
+        <button disabled={loading} className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80">
           {loading?"Updating...":"Update"}
         </button>
       </form>
@@ -111,7 +132,7 @@ const Profile = () => {
       {success && <p className="text-center text-blue-500">{success}</p>}
       <div className="flex justify-between mt-5">
         <span className="text-red-700 cursor-pointer">Delete account</span>
-        <span className="text-red-700 cursor-pointer">Sign out</span>
+        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">Sign out</span>
       </div>
     </div>
   );

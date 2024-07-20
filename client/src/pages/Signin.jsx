@@ -14,7 +14,7 @@ const Signin = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(signInStart)
+    dispatch(signInStart())
     try {
       const res = await axios.post("/api/auth/signin", {
         ...formData,
