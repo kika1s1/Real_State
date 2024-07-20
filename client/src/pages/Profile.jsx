@@ -30,6 +30,7 @@ const Profile = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log(currentUser._id)
     dispatch(signInStart())
     e.preventDefault();
     const formData = new FormData();
@@ -42,7 +43,7 @@ const Profile = () => {
     }
 
     try {
-      const res = await axios.put("/api/auth/update_profile", formData, {
+      const res = await axios.post("/api/user/update/"+currentUser._id, formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }

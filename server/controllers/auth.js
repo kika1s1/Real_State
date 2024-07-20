@@ -91,38 +91,3 @@ export const google = async (req, res, next) => {
 };
 
 
-
-// Update user profile
-export const updateUserProfile = async (req, res, next) => {
-  const { username, email, password } = req.body;
-  const profileImage = req.file ? req.file.filename : null; // Handle profile image update if provided
-  console.log(profileImage)
-  try {
-    let user = await User.findOne({email});
-
-    if (!user) {
-      return next(new ErrorResponse("User not found", 404));
-    }
-
-    // Update fields
-    user.username = username;
-    user.email = email;
-    user.avatar = profileImage? `http://localhost:3000/uploads/${profileImage}` : user.avatar;
-
-    if (password) {
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-    }
-
-    await user.save();
-    const { password: pwd, ...userData } = user._doc;
-
-    res.json({
-      success: true,
-      message:"Profile updated successfully",
-
-         ...userData });
-  } catch (err) {
-    next(err);
-  }
-};
