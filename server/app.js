@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import bodyParser from 'body-parser'
 
 import userRoutes from './routes/user.js'
 import authRoutes from './routes/auth.js'
@@ -18,6 +19,7 @@ mongoose
 const PORT = process.env.PORT || 3000
 const app = express();
 app.use(express.json());
+app.use(bodyParser.urlencoded({extended:true}))
 
 app.use("/api/user", userRoutes)
 app.use("/api/auth", authRoutes)

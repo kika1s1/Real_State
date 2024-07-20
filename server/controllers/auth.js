@@ -4,13 +4,19 @@ import ErrorResponse from '../utils/errorResponse.js';
 
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
-  const hashedPassword = bcryptjs.hashSync(password, 10);
+  if(!(username && email && password)){
+    return next(new ErrorResponse("All fields are required.", 400))
+  }
+  const hashedPassword =  bcryptjs.hashSync(password, 10);
   const newUser = new User({ username, email, password: hashedPassword });
   try {
     const userEmail = await User.findOne({email})
     const userUsername = await User.findOne({username})
-    if(userEmail || userUsername){
+    if(userEmail){
         return next(new ErrorResponse("Email already exists.", 400))
+    }
+    if(userUsername){
+      return next(new ErrorResponse("Username already exists.", 400))
     }
     await newUser.save();
     res.status(201).json({
