@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bodyParser from 'body-parser'
+import { fileURLToPath } from "url";
+import path from "path";
 
 import connectDB from "./config/connectDB.js";
 
@@ -15,6 +17,15 @@ const PORT = process.env.PORT || 3000
 const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}))
+
+
+// Define __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// Set static folder for profile images.
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+
 
 app.use("/api/user", userRoutes)
 app.use("/api/auth", authRoutes)
