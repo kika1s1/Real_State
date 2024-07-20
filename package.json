@@ -1,0 +1,19 @@
+{
+  "name": "mern-real-state",
+  "version": "1.0.0",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/app.sj",
+    "dev": "nodemon server/app.js"
+  },
+  "keywords": [],
+  "author": "tamirat kebede",
+  "license": "ISC",
+  "description": "Mern stack real state application",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1"
+  }
+}
