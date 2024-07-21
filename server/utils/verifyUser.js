@@ -5,8 +5,9 @@ dotenv.config()
 
 export const verifyToken = async (req, res, next) => {
   const token = req.cookies["x-auth-token"];
-
+  
   if (!token) {
+    
     return next(new ErrorResponse("No token, authorization denied",401 ));
   }
 

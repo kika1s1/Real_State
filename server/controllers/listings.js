@@ -1,15 +1,58 @@
 
 import Listing from '../models/Listing.js';
 import ErrorResponse from '../utils/errorResponse.js';
+import upload from '../config/upload.js';
 
+// export const createListing = async (req, res, next) => {
+//   try {
+//     const listing = await Listing.create(req.body);
+//     return res.status(201).json(listing);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+
+
+// Create Listing Endpoint with Multer Middleware
 export const createListing = async (req, res, next) => {
   try {
-    const listing = await Listing.create(req.body);
-    return res.status(201).json(listing);
+    console.log("thisis")
+    // Handle file upload
+    upload.array('images', 6)(req, res, async (err) => {
+      if (err) {
+        return next(err);
+      }
+
+      
+      // Collect image URLs
+      const imageUrls = req.files ? req.files.map(file => `http://localhost:5000/uploads/${file.filename}`) : [];
+
+      // Create listing document
+      const listing = await Listing.create({
+        imageUrls,
+        ...req.body
+      }
+      );
+
+      return res.status(201).json(listing);
+    });
   } catch (error) {
     next(error);
   }
 };
+
+export const uploadImage = (req, res) => {
+  
+  try {
+
+    const imageUrls = req.files ? req.files.map(file => `http://localhost:3000/uploads/${file.filename}`) : [];
+    res.json({ urls: imageUrls });
+  } catch (error) {
+    res.status(500).json({ error: 'Image upload failed' });
+  }
+};
+
 
 export const deleteListing = async (req, res, next) => {
   const listing = await Listing.findById(req.params.id);
