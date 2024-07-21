@@ -9,5 +9,5 @@ router.get("/test",test)
 router.post('/update/:id',verifyToken, upload.single('profileImage'), updateUser); 
 router.delete('/delete/:id', verifyToken, deleteUser)
 router.get('/listings/:id', verifyToken, getUserListings)
-router.get('/:id', verifyToken, getUser)
+router.get('/:id', getUser)
 export default router

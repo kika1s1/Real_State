@@ -26,9 +26,12 @@ export const createComment = async (req, res, next) => {
 
 export const getPostComments = async (req, res, next) => {
   try {
-    const comments = await Comment.find({ postId: req.params.postId }).sort({
-      createdAt: -1,
-    });
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 2;
+    const comments = await Comment.find({ postId: req.params.postId })
+      .sort({ createdAt: -1 })
+      .skip(startIndex)
+      .limit(limit);
     res.status(200).json(comments);
   } catch (error) {
     next(error);
@@ -62,7 +65,9 @@ export const editComment = async (req, res, next) => {
     if (!comment) {
       return next(new ErrorResponse("Comment not found", 404));
     }
-    if (comment.userId !== req.user.id && !req.user.isAdmin) {
+    const userIn = await User.findById(req.user.id)
+
+    if (comment.userId !== req.user.id && !userIn.isAdmin) {
       return next(
         new ErrorResponse("You are not allowed to edit this comment", 403)
       );
@@ -87,7 +92,8 @@ export const deleteComment = async (req, res, next) => {
     if (!comment) {
       return next(new ErrorResponse("Comment not found", 404));
     }
-    if (comment.userId !== req.user.id && !req.user.isAdmin) {
+    const userIn = await User.findById(req.user.id)
+    if (comment.userId !== req.user.id && !userIn.isAdmin) {
       return next(
         new ErrorResponse("You are not allowed to delete this comment", 403)
       );
