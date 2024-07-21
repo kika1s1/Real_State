@@ -11,6 +11,8 @@ import CreateListing from "./pages/CreateListing";
 import Listing from "./pages/Listing";
 import Search from "./pages/Search";
 import UpdateListing from "./pages/UpdateListing";
+import OnlyAdminPrivateRoute from "./components/OnlyAdminRoute";
+import { Dashboard } from "./pages/Dashboard";
 const App = () => {
   return (
     <BrowserRouter>
@@ -30,6 +32,9 @@ const App = () => {
             path='/update-listing/:listingId'
             element={<UpdateListing />}
           />
+        </Route>
+        <Route element={<OnlyAdminPrivateRoute />}>
+          <Route path='/dashboard' element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>
