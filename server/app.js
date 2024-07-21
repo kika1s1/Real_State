@@ -11,6 +11,7 @@ import connectDB from "./config/connectDB.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 import listingRoutes from "./routes/listings.js";
+import commentRoutes from "./routes/comment.js"
 import errorHandler from "./middleware/errorHandler.js";
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use('/api/listing', listingRoutes);
+app.use('/api/comment', commentRoutes);
 app.use(errorHandler);
 
 app.listen(PORT, () => {

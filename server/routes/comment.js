@@ -1,6 +1,6 @@
 import {Router} from 'express';
 const router = Router();
-
+import { verifyToken } from '../utils/verifyUser.js';
 import {
     createComment,
     deleteComment,
