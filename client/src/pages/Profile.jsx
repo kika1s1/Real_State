@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState } from "react";
 import axios from "axios";
 import {  deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserStart, updateUserFailure, updateUserStart, updateUserSuccess } from "../features/user/userSlice";
-
+import { Link } from "react-router-dom";
 const Profile = () => {
   const [profileImage, setProfileImage] = useState(null);
   const {loading, error} = useSelector(state=>state.user)
@@ -144,6 +144,12 @@ const Profile = () => {
       </form>
       {error && <p className="text-center text-red-500">{error}</p>}
       {success && <p className="text-center text-blue-500">{success}</p>}
+      <Link
+          className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95'
+          to={'/create-listing'}
+        >
+          Create Listing
+        </Link>
       <div className="flex justify-between mt-5">
         <span onClick={handleDeleteUser} className="text-red-700 cursor-pointer">Delete account</span>
         <span onClick={handleSignOut} className="text-red-700 cursor-pointer">Sign out</span>
