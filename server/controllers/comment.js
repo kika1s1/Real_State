@@ -1,12 +1,13 @@
 import ErrorResponse from "../utils/errorResponse.js";
 import Comment from "../models/Comment.js";
+import User from "../models/User.js";
 export const createComment = async (req, res, next) => {
   try {
     const { content, postId, userId } = req.body;
 
     if (userId !== req.user.id) {
       return next(
-        new ErrorResponse('You are not allowed to create this comment', 403)
+        new ErrorResponse("You are not allowed to create this comment", 403)
       );
     }
 
@@ -38,7 +39,7 @@ export const likeComment = async (req, res, next) => {
   try {
     const comment = await Comment.findById(req.params.commentId);
     if (!comment) {
-      return next(new ErrorResponse('Comment not found', 404));
+      return next(new ErrorResponse("Comment not found", 404));
     }
     const userIndex = comment.likes.indexOf(req.user.id);
     if (userIndex === -1) {
@@ -59,11 +60,11 @@ export const editComment = async (req, res, next) => {
   try {
     const comment = await Comment.findById(req.params.commentId);
     if (!comment) {
-      return next(new ErrorResponse('Comment not found', 404));
+      return next(new ErrorResponse("Comment not found", 404));
     }
     if (comment.userId !== req.user.id && !req.user.isAdmin) {
       return next(
-        new ErrorResponse('You are not allowed to edit this comment',403)
+        new ErrorResponse("You are not allowed to edit this comment", 403)
       );
     }
 
@@ -84,27 +85,36 @@ export const deleteComment = async (req, res, next) => {
   try {
     const comment = await Comment.findById(req.params.commentId);
     if (!comment) {
-      return next(new ErrorResponse('Comment not found', 404));
+      return next(new ErrorResponse("Comment not found", 404));
     }
     if (comment.userId !== req.user.id && !req.user.isAdmin) {
       return next(
-        new ErrorResponse('You are not allowed to delete this comment', 403)
+        new ErrorResponse("You are not allowed to delete this comment", 403)
       );
     }
     await Comment.findByIdAndDelete(req.params.commentId);
-    res.status(200).json('Comment has been deleted');
+    res.status(200).json("Comment has been deleted");
   } catch (error) {
     next(error);
   }
 };
 
 export const getcomments = async (req, res, next) => {
-  if (!req.user.isAdmin)
-    return next(new ErrorResponse('You are not allowed to get all comments', 403));
   try {
+    if (!req.user.id)
+      return next(
+        new ErrorResponse("You are not allowed to get all comments", 403)
+      );
+    const user = await User.findById(req.user.id);
+    if (!user.isAdmin) {
+      return next(
+        new ErrorResponse("You are not allowed to get all comments", 403)
+      );
+    }
+
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
-    const sortDirection = req.query.sort === 'desc' ? -1 : 1;
+    const sortDirection = req.query.sort === "desc" ? -1 : 1;
     const comments = await Comment.find()
       .sort({ createdAt: sortDirection })
       .skip(startIndex)
