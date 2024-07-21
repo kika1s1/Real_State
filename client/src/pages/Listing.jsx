@@ -14,6 +14,7 @@ import {
   FaShare,
 } from 'react-icons/fa';
 import Contact from '../components/Contact';
+import CommentSection from '../components/CommentSection';
 
 export default function Listing() {
   SwiperCore.use([Navigation]);
@@ -142,6 +143,7 @@ export default function Listing() {
               </button>
             )}
             {contact && <Contact listing={listing} />}
+            <CommentSection postId={listing._id}/>
           </div>
         </div>
       )}
