@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const UpdateListing = () => {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const params = useParams();
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     imageUrls: [],
@@ -25,6 +26,40 @@ const UpdateListing = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchListingData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/listing/get/${params.listingId}`);
+        const data = await response.json();
+        if (response.ok) {
+          setFormData({
+            imageUrls: data.imageUrls,
+            name: data.name,
+            description: data.description,
+            address: data.address,
+            type: data.type,
+            bedrooms: data.bedrooms,
+            bathrooms: data.bathrooms,
+            regularPrice: data.regularPrice,
+            discountPrice: data.discountPrice,
+            offer: data.offer,
+            parking: data.parking,
+            furnished: data.furnished,
+          });
+        } else {
+          setError(data.message);
+        }
+      } catch (error) {
+        setError('Failed to fetch listing data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchListingData();
+  }, [params.listingId]);
+
   const uploadImage = async (file) => {
     const formData = new FormData();
     formData.append('images', file);
@@ -39,26 +74,22 @@ const UpdateListing = () => {
     }
 
     const data = await response.json();
-    return data.urls; // Return only the URLs
+    return data.urls;
   };
 
   const handleImageSubmit = async () => {
-    if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
+    if (files.length > 0 && files.length + formData.imageUrls.length <= 6) {
       setUploading(true);
       setImageUploadError(false);
-      const promises = [];
-
-      for (let i = 0; i < files.length; i++) {
-        promises.push(uploadImage(files[i]));
-      }
+      const promises = files.map((file) => uploadImage(file));
 
       try {
         const results = await Promise.all(promises);
-        const newImageUrls = results.flat(); // Flatten the array of arrays if necessary
+        const newImageUrls = results.flat();
 
         setFormData((prev) => ({
           ...prev,
-          imageUrls: prev.imageUrls.concat(newImageUrls),
+          imageUrls: [...prev.imageUrls, ...newImageUrls],
         }));
         setImageUploadError(false);
       } catch (error) {
@@ -114,7 +145,7 @@ const UpdateListing = () => {
     setError(false);
 
     try {
-      const res = await fetch('/api/listing/create', {
+      const res = await fetch(`/api/listing/update/${params.listingId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -345,7 +376,7 @@ const UpdateListing = () => {
             disabled={loading || uploading}
             className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
           >
-            {loading ? 'Creating...' : 'Create listing'}
+            {loading ? 'Updating...' : 'Update listing'}
           </button>
           {error && <p className='text-red-700 text-sm'>{error}</p>}
         </div>
