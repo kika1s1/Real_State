@@ -2,15 +2,8 @@
 import Listing from '../models/Listing.js';
 import ErrorResponse from '../utils/errorResponse.js';
 import upload from '../config/upload.js';
+import User from '../models/User.js';
 
-// export const createListing = async (req, res, next) => {
-//   try {
-//     const listing = await Listing.create(req.body);
-//     return res.status(201).json(listing);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
 
 
 
@@ -60,8 +53,11 @@ export const deleteListing = async (req, res, next) => {
   if (!listing) {
     return next(new ErrorResponse('Listing not found!', 404));
   }
+  const admin = await User.findById(req.user.id)
+  const isAdmin = admin.isAdmin
 
-  if (req.user.id !== listing.userRef) {
+
+  if (req.user.id !== listing.userRef && !isAdmin ) {
     return next(new ErrorResponse('You can only delete your own listings!', 401));
   }
 
@@ -78,7 +74,10 @@ export const updateListing = async (req, res, next) => {
   if (!listing) {
     return next(new ErrorResponse('Listing not found!', 404));
   }
-  if (req.user.id !== listing.userRef) {
+  const admin = await User.findById(req.user.id)
+  const isAdmin = admin.isAdmin
+
+  if (req.user.id !== listing.userRef && !isAdmin) {
     return next(new ErrorResponse('You can only update your own listings!', 401));
   }
 
@@ -108,7 +107,7 @@ export const getListing = async (req, res, next) => {
 
 export const getListings = async (req, res, next) => {
   try {
-    const limit = parseInt(req.query.limit) || 9;
+    const limit = parseInt(req.query.limit) || 5;
     const startIndex = parseInt(req.query.startIndex) || 0;
     let offer = req.query.offer;
 
@@ -150,8 +149,27 @@ export const getListings = async (req, res, next) => {
       .sort({ [sort]: order })
       .limit(limit)
       .skip(startIndex);
+      const totalPosts = await Listing.countDocuments();
 
-    return res.status(200).json(listings);
+      const now = new Date();
+  
+      const oneMonthAgo = new Date(
+        now.getFullYear(),
+        now.getMonth() - 1,
+        now.getDate()
+      );
+  
+      const lastMonthPosts = await Listing.countDocuments({
+        createdAt: { $gte: oneMonthAgo },
+      });
+  
+      return res.status(200).json({
+        posts:listings,
+        totalPosts,
+        lastMonthPosts,
+      });
+
+    // return res.status(200).json(listings);
   } catch (error) {
     next(error);
   }
