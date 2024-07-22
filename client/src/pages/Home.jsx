@@ -16,7 +16,7 @@ export default function Home() {
       try {
         const res = await fetch('/api/listing/get?offer=true&limit=4');
         const data = await res.json();
-        setOfferListings(data);
+        setOfferListings(data.posts);
         fetchRentListings();
       } catch (error) {
         console.log(error);
@@ -26,7 +26,8 @@ export default function Home() {
       try {
         const res = await fetch('/api/listing/get?type=rent&limit=4');
         const data = await res.json();
-        setRentListings(data);
+        
+        setRentListings(data.posts);
         fetchSaleListings();
       } catch (error) {
         console.log(error);
@@ -37,7 +38,7 @@ export default function Home() {
       try {
         const res = await fetch('/api/listing/get?type=sale&limit=4');
         const data = await res.json();
-        setSaleListings(data);
+        setSaleListings(data.posts);
       } catch (error) {
         console.log(error);
       }

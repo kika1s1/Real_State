@@ -17,9 +17,12 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
         const data = await res.json();
         if (res.ok) {
           setUser(data);
+          
         }
+      
+
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
       }
     };
     getUser();
@@ -54,8 +57,8 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
       <div className='flex-shrink-0 mr-3'>
         <img
           className='w-10 h-10 rounded-full bg-gray-200'
-          src={user.profilePicture}
-          alt={user.username}
+          // src={user.avatar}
+          // alt={user.username}
         />
       </div>
       <div className='flex-1'>
