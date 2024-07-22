@@ -12,7 +12,7 @@ import Listing from "./pages/Listing";
 import Search from "./pages/Search";
 import UpdateListing from "./pages/UpdateListing";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminRoute";
-import { Dashboard } from "./pages/Dashboard";
+import Dashboard  from "./pages/Dashboard";
 const App = () => {
   return (
     <BrowserRouter>
@@ -27,7 +27,6 @@ const App = () => {
         <Route path="" element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/create-listing" element={<CreateListing />} />
           <Route
             path='/update-listing/:listingId'
             element={<UpdateListing />}
@@ -35,6 +34,7 @@ const App = () => {
         </Route>
         <Route element={<OnlyAdminPrivateRoute />}>
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path="/create-listing" element={<CreateListing />} />
         </Route>
       </Routes>
     </BrowserRouter>
