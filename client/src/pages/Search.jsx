@@ -58,7 +58,7 @@ const Search =()=>{
       } else {
         setShowMore(false);
       }
-      setListings(data);
+      setListings(data.posts);
       setLoading(false);
     };
 
