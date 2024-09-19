@@ -1,17 +1,15 @@
 import { FaSearch } from "react-icons/fa";
-import { IoMdNotifications } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
 import axios from 'axios'
-import { deleteUserFailure, deleteUserSuccess, signOutUserStart } from "../features/user/userSlice";
+import { deleteUserFailure, deleteUserSuccess, setAndUnSetProfile, signOutUserStart } from "../features/user/userSlice";
 const Header = () => {
-  // const [open, setOpen] = useState(false);
-  const [profile, setProfile] = useState(false);
   const dispatch = useDispatch()
   const { currentUser } = useSelector((state) => state.user);
+  // console.log(currentUser)
+  const {profile} = useSelector((state)=>state.user)
   const handleProfile = () => {
-    setProfile((prev) => !prev);
+    dispatch(setAndUnSetProfile())
   };
   const handleSignOut = async () => {
     try {
@@ -30,7 +28,7 @@ const Header = () => {
   };
   
   return (
-    <header className="bg-slate-200 shadow-md" >
+    <header >
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link to="/">
           <h1 className="font-bold text-sm sm:text-xl flex flex-wrap">
@@ -38,15 +36,15 @@ const Header = () => {
             <span className="text-slate-700">Estate</span>
           </h1>
         </Link>
-        <form className="bg-slate-100 p-3 rounded-lg flex items-center">
+        <form className=" p-3  rounded-lg flex items-center">
           <input
             type="text"
             placeholder="Search..."
-            className="bg-transparent border-none  rounded-lg focus:rounded-lg focus:outline-none w-24 sm:w-64"
+            className="bg-transparent border-none  rounded-lg focus:outline-none w-24 sm:w-64"
           />
           <FaSearch className="text-slate-600" />
         </form>
-        <ul className="flex gap-4">
+        <ul className="flex gap-4" >
           <Link to="/">
             <li className="hidden sm:inline text-slate-700 hover:underline">
               Home
@@ -60,16 +58,6 @@ const Header = () => {
         </ul>
         {currentUser ? (
           <div className="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button
-            onClick={()=>setProfile(false)}
-              type="button"
-              className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-            >
-              <span className="absolute -inset-1.5"></span>
-              <span className="sr-only">View notifications</span>
-              <IoMdNotifications size={20}  />
-            </button>
-
             {/* <!-- Profile dropdown --> */}
             <div className="relative ml-3">
               <div>

@@ -10,6 +10,7 @@ export default function DashUsers() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState('');
+  const [promote, setPromote] = useState(false);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -63,6 +64,23 @@ export default function DashUsers() {
     }
   };
 
+  const handlePromoteDemoteUser = async (userId) => {
+    try {
+        const res = await fetch(`/api/admin/promote_demote/${userId}`, {
+            method: 'PATCH',
+        });
+        const data = await res.json();
+        if (res.ok) {
+            setUsers((prev) => prev.map((user) => user._id === userId ? { ...user, isAdmin: !user.isAdmin } : user));
+            setShowModal(false);
+        } else {
+            console.log(data);
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+  }
+
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500'>
       {currentUser.isAdmin && users.length > 0 ? (
@@ -74,6 +92,7 @@ export default function DashUsers() {
               <Table.HeadCell>Username</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
               <Table.HeadCell>Admin</Table.HeadCell>
+              <Table.HeadCell>Promote / Demote</Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
             </Table.Head>
             {users.map((user) => (
@@ -99,10 +118,32 @@ export default function DashUsers() {
                     )}
                   </Table.Cell>
                   <Table.Cell>
+                    {user.isAdmin ? (
+                  
+                      <button className='text-red-500' onClick={() => {
+                        setShowModal(true);
+                        setPromote(true)
+                        setUserIdToDelete(user._id);
+                        
+                      }}
+                      >Demote</button>
+                    ) : (
+                      <button className='text-green-500'
+                      onClick={() => {
+                        setShowModal(true);
+                        setPromote(true)
+                        setUserIdToDelete(user._id);
+                        
+                      }}
+                      >Promote</button>
+                    )}
+                  </Table.Cell>
+                  <Table.Cell>
                     <span
                       onClick={() => {
                         setShowModal(true);
                         setUserIdToDelete(user._id);
+                        setPromote(false)
                       }}
                       className='font-medium text-red-500 hover:underline cursor-pointer'
                     >
@@ -136,12 +177,18 @@ export default function DashUsers() {
           <div className='text-center'>
             <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
             <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>
-              Are you sure you want to delete this user?
+            {promote? "Are you going to promote Demote":"Are you sure you want to delete this user?"}
             </h3>
             <div className='flex justify-center gap-4'>
-              <Button color='failure' onClick={handleDeleteUser}>
-                Yes, I&rsquo;m sure
-              </Button>
+              {promote ? (
+                <Button color='failure' onClick={() => handlePromoteDemoteUser(userIdToDelete)}>
+                  Yes, I&rsquo;m sure
+                </Button>
+              ) : (
+                <Button color='failure' onClick={handleDeleteUser}>
+                  Yes, I&rsquo;m sure
+                </Button>
+              )}
               <Button color='gray' onClick={() => setShowModal(false)}>
                 No, cancel
               </Button>

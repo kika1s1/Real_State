@@ -4,6 +4,7 @@ const initialState = {
   currentUser: null,
   error: null,
   loading: false,
+  profile:false
 };
 
 const userSlice = createSlice({
@@ -58,6 +59,12 @@ const userSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    setAndUnSetProfile: (state)=>{
+      state.profile = !state.profile
+    },
+    unSetProfile: (state)=>{
+      state.profile = false
+    }
   },
 });
 
@@ -74,6 +81,8 @@ export const {
   signOutUserFailure,
   signOutUserSuccess,
   signOutUserStart,
+  setAndUnSetProfile,
+  unSetProfile
 } = userSlice.actions;
 
 export default userSlice.reducer;
