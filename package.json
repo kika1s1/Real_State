@@ -21,6 +21,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+    "mern-real-state": "file:",
     "mongoose": "^8.5.1",
     "multer": "^1.4.5-lts.1",
     "uuid": "^10.0.0"
