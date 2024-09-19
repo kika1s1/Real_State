@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 
 import connectDB from "./config/connectDB.js";
 
+import adminRoutes from "./routes/admin.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 import listingRoutes from "./routes/listings.js";
@@ -31,6 +32,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use('/api/listing', listingRoutes);
 app.use('/api/comment', commentRoutes);
+app.use("/api/admin", adminRoutes);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
