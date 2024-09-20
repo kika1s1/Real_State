@@ -49,7 +49,11 @@ This is a full-stack real estate  application that allows users to create, updat
 - Create, update, and view property listings
 - Image upload functionality with file validation
 - Dark mode support
-- Responsive design
+- Live chatting with realestate owner
+- commenting on realestate
+- Admin dashboard
+- Demote and promote Admin 
+- and etc.
 
 ## Technologies
 
