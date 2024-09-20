@@ -6,6 +6,12 @@ This is a full-stack real estate  application that allows users to create, updat
 
 - [Tamirat Real Estate  MERN Application](#tamirat-real-estate--mern-application)
   - [Table of Contents](#table-of-contents)
+  - [Demo](#demo)
+    - [home Page](#home-page)
+    - [Filtering RealEstate](#filtering-realestate)
+    - [Comment For RealEstate](#comment-for-realestate)
+    - [Live Chat With RealEstate Owner](#live-chat-with-realestate-owner)
+    - [Admin Dashboard](#admin-dashboard)
   - [Features](#features)
   - [Technologies](#technologies)
     - [Frontend](#frontend)
@@ -18,13 +24,24 @@ This is a full-stack real estate  application that allows users to create, updat
   - [API Endpoints](#api-endpoints)
     - [User Routes](#user-routes)
     - [Listing Routes](#listing-routes)
-  - [Demo](#demo)
-    - [home Page](#home-page)
-    - [Filtering RealEstate](#filtering-realestate)
-    - [Comment For RealEstate](#comment-for-realestate)
-    - [Live Chat With RealEstate Owner](#live-chat-with-realestate-owner)
-    - [Admin Dashboard](#admin-dashboard)
   - [License](#license)
+
+## Demo
+### home Page
+<img src="uploads/screenshot_demo/home.png" />
+
+### Filtering RealEstate
+<img src="uploads/screenshot_demo/filtering.png" />
+
+### Comment For RealEstate
+<img src="uploads/screenshot_demo/comment_for_real_state.png" />
+
+
+### Live Chat With RealEstate Owner
+<img src="uploads/screenshot_demo/live_chat.png" />
+
+### Admin Dashboard
+<img src="uploads/screenshot_demo/admin dashboard.png" />
 
 ## Features
 
@@ -120,22 +137,7 @@ Make sure you have the following installed on your machine:
 - `DELETE /api/listings/delete/:id`: Delete a listing
 - `POST /api/listings/upload`: Upload listing images
 
-## Demo
-### home Page
-<img src="uploads/screenshot_demo/home.png" />
 
-### Filtering RealEstate
-<img src="uploads/screenshot_demo/filtering.png" />
-
-### Comment For RealEstate
-<img src="uploads/screenshot_demo/comment_for_real_state.png" />
-
-
-### Live Chat With RealEstate Owner
-<img src="uploads/screenshot_demo/live_chat.png" />
-
-### Admin Dashboard
-<img src="uploads/screenshot_demo/admin dashboard.png" />
 
 
 ## License
