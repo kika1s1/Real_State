@@ -12,7 +12,8 @@ import Listing from "./pages/Listing";
 import Search from "./pages/Search";
 import UpdateListing from "./pages/UpdateListing";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminRoute";
-import Dashboard  from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
+import Chat from "./components/chat/Chat";
 const App = () => {
   return (
     <BrowserRouter>
@@ -22,21 +23,22 @@ const App = () => {
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
-        <Route path='/search' element={<Search/>} />
-        <Route path='/listing/:listingId' element={<Listing />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/listing/:listingId" element={<Listing />} />
         <Route path="" element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
           <Route
-            path='/update-listing/:listingId'
+            path="/update-listing/:listingId"
             element={<UpdateListing />}
           />
         </Route>
         <Route element={<OnlyAdminPrivateRoute />}>
-          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/create-listing" element={<CreateListing />} />
         </Route>
       </Routes>
+      <Chat />
     </BrowserRouter>
   );
 };

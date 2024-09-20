@@ -11,7 +11,7 @@ import {
 } from 'react-icons/hi';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { signOutUserSuccess, signOutUserFailure, signOutUserStart } from '../features/user/userSlice';
+import { signOutUserSuccess, signOutUserFailure, signOutUserStart } from '../../features/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 

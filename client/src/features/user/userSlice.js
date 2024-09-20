@@ -4,7 +4,8 @@ const initialState = {
   currentUser: null,
   error: null,
   loading: false,
-  profile:false
+  profile:false,
+  showChat: false
 };
 
 const userSlice = createSlice({
@@ -64,7 +65,14 @@ const userSlice = createSlice({
     },
     unSetProfile: (state)=>{
       state.profile = false
-    }
+    },
+    setAndUnsetChat: (state)=>{
+      state.showChat = !state.showChat
+    },
+    unSetChat: (state)=>{
+      state.showChat = false
+    },
+
   },
 });
 
@@ -82,7 +90,9 @@ export const {
   signOutUserSuccess,
   signOutUserStart,
   setAndUnSetProfile,
-  unSetProfile
+  unSetProfile,
+  unSetChat, 
+  setAndUnsetChat
 } = userSlice.actions;
 
 export default userSlice.reducer;

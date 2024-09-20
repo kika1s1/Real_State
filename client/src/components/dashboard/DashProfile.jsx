@@ -9,7 +9,7 @@ import {
   updateUserFailure,
   updateUserStart,
   updateUserSuccess,
-} from "../features/user/userSlice";
+} from "../../features/user/userSlice"
 const DashProfile = () => {
   const [profileImage, setProfileImage] = useState(null);
   const { loading, error } = useSelector((state) => state.user);
