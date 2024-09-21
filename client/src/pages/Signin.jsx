@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../features/user/userSlice";
 import Oauth from "../components/Oauth";
+import { setToken } from "../features/chat/chatSlice";
 const Signin = () => {
   const [formData, setFormData] = useState({});
   const {error, loading} = useSelector(state=>state.user)
@@ -24,6 +25,8 @@ const Signin = () => {
         return;
       }
       dispatch(signInSuccess(res.data))
+      dispatch(setToken(res.data.token))
+      localStorage.setItem("token", res.data.token);
       navigate("/")
     } catch (error) {
       dispatch(signInFailure(error.response.data.error))

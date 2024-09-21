@@ -7,6 +7,7 @@ import {
   HiOutlineUserGroup,
   HiOutlinePaperClip ,
   HiAnnotation,
+  HiOutlineChat,
   HiChartPie,
 } from 'react-icons/hi';
 import { useEffect, useState } from 'react';
@@ -108,6 +109,15 @@ export default function DashSidebar() {
                   as='div'
                 >
                   Comments
+                </Sidebar.Item>
+              </Link>
+              <Link to='/dashboard?tab=chat'>
+                <Sidebar.Item
+                  active={tab === 'chat'}
+                  icon={HiOutlineChat}
+                  as='div'
+                >
+                  Live Chat
                 </Sidebar.Item>
               </Link>
             </>

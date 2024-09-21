@@ -14,7 +14,9 @@ import UpdateListing from "./pages/UpdateListing";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminRoute";
 import Dashboard from "./pages/Dashboard";
 import Chat from "./components/chat/Chat";
+import { useSelector } from "react-redux";
 const App = () => {
+  const {currentUser} = useSelector((state) => state.user);
   return (
     <BrowserRouter>
       <Header />
@@ -38,7 +40,7 @@ const App = () => {
           <Route path="/create-listing" element={<CreateListing />} />
         </Route>
       </Routes>
-      <Chat />
+      {(currentUser && !currentUser.isAdmin) && <Chat />}
     </BrowserRouter>
   );
 };

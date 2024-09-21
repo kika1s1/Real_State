@@ -7,13 +7,20 @@ import DashUsers from '../components/dashboard/DashUsers';
 import DashComments from '../components/dashboard/DashComments';
 import DashboardComp from '../components/dashboard/DashboardComp';
 import CreateListing from './CreateListing';
+import DashboardChat from '../components/dashboard/DashboardChat';
+import MessagePage from '../components/chat/MessagePage';
 
 export default function Dashboard() {
   const location = useLocation();
   const [tab, setTab] = useState('dash');
+  const [id, setId] = useState("");
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
+    // console.log(urlParams.get(tab))
     const tabFromUrl = urlParams.get('tab');
+    const id = urlParams.get('id');
+    setId(id);
+    // console.log(id);
     if (tabFromUrl) {
       setTab(tabFromUrl);
     }
@@ -36,6 +43,10 @@ export default function Dashboard() {
       {tab === 'comments' && <DashComments />}
       {/* dashboard comp */}
       {tab === 'dash' && <DashboardComp />}
+      {/* dashboard chat */}
+      {tab === 'chat' && <DashboardChat />}
+      {/* individual message */}
+      {(tab === 'chat' &&  id ) && <MessagePage params={{userId:id}} />}
     </div>
   );
 }

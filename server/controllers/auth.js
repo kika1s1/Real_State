@@ -49,7 +49,7 @@ export const signin = async (req, res, next) => {
     res
       .cookie("x-auth-token", token, { httpOnly: true })
       .status(200)
-      .json(userData);
+      .json({...userData,token});
   } catch (error) {
     next(error);
   }
