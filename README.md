@@ -25,6 +25,7 @@ This is a full-stack real estate  application that allows users to create, updat
   - [API Endpoints](#api-endpoints)
     - [User Routes](#user-routes)
     - [Listing Routes](#listing-routes)
+- [Email and Password To login](#email-and-password-to-login)
   - [License](#license)
 
 ## Demo
@@ -144,6 +145,9 @@ Make sure you have the following installed on your machine:
 - `DELETE /api/listings/delete/:id`: Delete a listing
 - `POST /api/listings/upload`: Upload listing images
 
+# Email and Password To login
+- ``` Email``` admin@gmail.com
+- ```Password``` admin
 
 
 
